@@ -269,19 +269,17 @@ function initHero() {
    6. SPLITTYPE TEXT ANIMATIONS
 ═══════════════════════════════════════════════════ */
 function initSplitText() {
-  if (prefersReduced || typeof SplitType === 'undefined') return;
+  if (prefersReduced) return;
 
-  // Split all .js-split-line elements — line by line reveal
+  // Clean, robust reveal animation for headings without destructive DOM chopping
   const lineEls = qsa('.js-split-line');
   lineEls.forEach(el => {
-    const split = new SplitType(el, { types: 'lines' });
-    gsap.fromTo(split.lines,
-      { yPercent: 110, opacity: 0 },
+    gsap.fromTo(el,
+      { y: 30, opacity: 0 },
       {
-        yPercent: 0,
+        y: 0,
         opacity: 1,
         duration: 1.0,
-        stagger: 0.1,
         ease: 'expo.out',
         scrollTrigger: {
           trigger: el,
@@ -292,17 +290,15 @@ function initSplitText() {
     );
   });
 
-  // Word-by-word reveal for eyebrow labels
+  // Eyebrow / label reveals
   const wordEls = qsa('.js-split-word');
   wordEls.forEach(el => {
-    const split = new SplitType(el, { types: 'words' });
-    gsap.fromTo(split.words,
+    gsap.fromTo(el,
       { opacity: 0, y: 16 },
       {
         opacity: 1,
         y: 0,
         duration: 0.7,
-        stagger: 0.07,
         ease: 'expo.out',
         scrollTrigger: {
           trigger: el,
