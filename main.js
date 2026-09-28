@@ -138,12 +138,12 @@ function initCursor() {
 }
 
 /* ═══════════════════════════════════════════════════
-   4. NAV — scroll state + burger
+   4. NAV — scroll state + luxury mobile drawer
 ═══════════════════════════════════════════════════ */
 function initNav() {
-  const nav    = qs('#main-nav');
-  const burger = qs('#nav-burger');
-  const links  = qs('#nav-links');
+  const nav     = qs('#main-nav');
+  const burger  = qs('#nav-burger');
+  const wrapper = qs('#nav-menu-wrapper');
   if (!nav) return;
 
   ScrollTrigger.create({
@@ -154,16 +154,19 @@ function initNav() {
   });
 
   burger?.addEventListener('click', () => {
-    const open = links.classList.toggle('open');
+    const open = wrapper?.classList.toggle('open');
     burger.classList.toggle('open', open);
     burger.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
     if (lenis) open ? lenis.stop() : lenis.start();
   });
 
-  links?.addEventListener('click', (e) => {
-    if (e.target.classList.contains('nav__link')) {
-      links.classList.remove('open');
+  wrapper?.addEventListener('click', (e) => {
+    if (e.target.closest('.nav__link') || e.target.closest('.nav__drawer-wa')) {
+      wrapper.classList.remove('open');
       burger?.classList.remove('open');
+      burger?.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
       if (lenis) lenis.start();
     }
   });
@@ -440,28 +443,95 @@ function initTicker() {
 }
 
 /* ═══════════════════════════════════════════════════
-   10. PAKET CARDS — Clip-path reveal
+   10. PAKET CARDS — Entrance, Filter Pills & Mobile Sync
 ═══════════════════════════════════════════════════ */
 function initPaket() {
-  if (prefersReduced) return;
-
   const cards = qsa('.pkg');
-  cards.forEach((card, i) => {
-    gsap.fromTo(card,
-      { opacity: 0, y: 60, scale: 0.97 },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1.0,
-        delay: i * 0.08,
-        ease: 'expo.out',
-        scrollTrigger: {
-          trigger: '#paket-grid',
-          start: 'top 82%',
+  const grid  = qs('#paket-grid');
+  const dots  = qsa('.paket__dot');
+  const pills = qsa('.pkg-filter-pill');
+
+  // Entrance animation
+  if (!prefersReduced) {
+    cards.forEach((card, i) => {
+      gsap.fromTo(card,
+        { opacity: 0, y: 60, scale: 0.97 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.0,
+          delay: i * 0.08,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: '#paket-grid',
+            start: 'top 82%',
+          }
         }
+      );
+    });
+  }
+
+  // Filter Pills (All / Umrah / Haji)
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      pills.forEach(p => {
+        p.classList.remove('is-active');
+        p.setAttribute('aria-selected', 'false');
+      });
+      pill.classList.add('is-active');
+      pill.setAttribute('aria-selected', 'true');
+
+      const filter = pill.dataset.filter;
+      cards.forEach(card => {
+        const cat = card.dataset.category;
+        const show = filter === 'all' || cat === filter;
+        card.classList.toggle('is-hidden', !show);
+      });
+
+      // Recalculate ScrollTrigger positions after layout shift
+      ScrollTrigger.refresh();
+    });
+  });
+
+  // Mobile Horizontal Swipe Dots Sync
+  if (grid && dots.length) {
+    grid.addEventListener('scroll', () => {
+      const scrollLeft = grid.scrollLeft;
+      const cardWidth  = cards[0]?.offsetWidth || 300;
+      const activeIdx  = Math.min(dots.length - 1, Math.max(0, Math.round(scrollLeft / (cardWidth + 16))));
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('is-active', idx === activeIdx);
+      });
+    }, { passive: true });
+
+    dots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => {
+        const targetCard = cards[idx];
+        if (targetCard) {
+          grid.scrollTo({
+            left: targetCard.offsetLeft - grid.offsetLeft,
+            behavior: 'smooth',
+          });
+        }
+      });
+    });
+  }
+
+  // Auto-select package in form when clicking 'Daftar'
+  qsa('.pkg__cta').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const selectVal = btn.dataset.select;
+      const paketSelect = qs('#paket-select');
+      if (selectVal && paketSelect) {
+        paketSelect.value = selectVal;
+        // Visual feedback on selected field
+        paketSelect.style.borderColor = 'var(--c-gold)';
+        setTimeout(() => {
+          paketSelect.style.borderColor = '';
+        }, 1500);
       }
-    );
+    });
   });
 }
 
@@ -902,6 +972,35 @@ function initLineReveal() {
 }
 
 /* ═══════════════════════════════════════════════════
+   21. MOBILE STICKY CONCIERGE BAR
+═══════════════════════════════════════════════════ */
+function initMobileConciergeBar() {
+  const bar = qs('#mobile-concierge-bar');
+  if (!bar) return;
+
+  // Reveal when scrolled past hero (180px)
+  ScrollTrigger.create({
+    start: 'top -180',
+    onUpdate: (self) => {
+      if (self.scroll() > 180) {
+        bar.classList.add('is-visible');
+      } else {
+        bar.classList.remove('is-visible');
+      }
+    }
+  });
+
+  // Hide when inquiry form is in viewport so it doesn't obstruct inputs or submit button
+  ScrollTrigger.create({
+    trigger: '#daftar',
+    start: 'top 85%',
+    end: 'bottom bottom',
+    onEnter: () => bar.classList.add('is-hidden'),
+    onLeaveBack: () => bar.classList.remove('is-hidden'),
+  });
+}
+
+/* ═══════════════════════════════════════════════════
    INIT AFTER LOADER — Main entry
 ═══════════════════════════════════════════════════ */
 function initAfterLoad() {
@@ -924,6 +1023,7 @@ function initAfterLoad() {
   initFooter();
   initAnchorScroll();
   initLineReveal();
+  initMobileConciergeBar();
 
   // Refresh ScrollTrigger on resize
   window.addEventListener('resize', () => {

@@ -38,13 +38,31 @@
       <span class="nav__brand-name">BAITULLAH</span>
       <span class="nav__brand-sub">TRAVEL</span>
     </div>
-    <ul class="nav__links" id="nav-links">
-      <li><a href="#kisah" class="nav__link" id="nav-kisah">Kisah</a></li>
-      <li><a href="#paket" class="nav__link" id="nav-paket">Paket</a></li>
-      <li><a href="#mengapa" class="nav__link" id="nav-mengapa">Mengapa Kami</a></li>
-      <li><a href="#jamaah" class="nav__link" id="nav-jamaah">Jamaah</a></li>
-      <li><a href="#kontak" class="nav__link" id="nav-kontak">Kontak</a></li>
-    </ul>
+
+    <!-- Editorial Nav Menu (Horizontal on Desktop, Luxury Fullscreen Drawer on Mobile) -->
+    <div class="nav__menu-wrapper" id="nav-menu-wrapper">
+      <ul class="nav__links" id="nav-links">
+        <li><a href="#kisah" class="nav__link" id="nav-kisah"><span class="nav__link-num">01</span><span>Kisah &amp; Filosofi</span></a></li>
+        <li><a href="#paket" class="nav__link" id="nav-paket"><span class="nav__link-num">02</span><span>Pilihan Paket</span></a></li>
+        <li><a href="#arafah-section" class="nav__link" id="nav-makna"><span class="nav__link-num">03</span><span>Makna Ibadah</span></a></li>
+        <li><a href="#mengapa" class="nav__link" id="nav-mengapa"><span class="nav__link-num">04</span><span>Mengapa Kami</span></a></li>
+        <li><a href="#journey" class="nav__link" id="nav-journey"><span class="nav__link-num">05</span><span>Alur Perjalanan</span></a></li>
+        <li><a href="#jamaah" class="nav__link" id="nav-jamaah"><span class="nav__link-num">06</span><span>Suara Jamaah</span></a></li>
+        <li><a href="#daftar" class="nav__link" id="nav-daftar"><span class="nav__link-num">07</span><span>Konsultasi Niat</span></a></li>
+      </ul>
+
+      <div class="nav__drawer-footer">
+        <a href="https://wa.me/6281234567890?text=Assalamu%27alaikum%20Baitullah%20Travel,%20saya%20ingin%20konsultasi%20niat%20ibadah" target="_blank" rel="noopener noreferrer" class="nav__drawer-wa">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.697.073-2.02-.475-1.637-.678-2.678-2.355-2.76-2.464-.082-.109-.661-.88-.661-1.678 0-.798.416-1.19.564-1.352.148-.162.324-.202.432-.202.108 0 .216.002.311.006.1.005.234-.038.366.279.136.327.466 1.134.507 1.218.041.084.068.182.013.292-.055.109-.082.178-.163.273-.082.095-.172.212-.246.285-.082.082-.168.171-.072.336.096.165.426.703.914 1.138.629.56 1.16.734 1.325.816.165.082.262.069.359-.042.097-.111.417-.486.528-.652.111-.166.222-.138.374-.083.152.055.968.456 1.134.539.166.083.277.125.318.194.041.069.041.402-.103.807z"/></svg>
+          <span>Chat WhatsApp Concierge 24 Jam</span>
+        </a>
+        <div class="nav__drawer-meta">
+          <span>Kemenag RI PPIU No. 412/2021 &bull; PIHK No. 189/2022</span>
+          <span>Hotline: +62 812-3456-7890</span>
+        </div>
+      </div>
+    </div>
+
     <a href="#daftar" class="nav__cta" id="nav-cta">Konsultasi Gratis &rarr;</a>
     <button class="nav__burger" id="nav-burger" aria-label="Buka menu" aria-expanded="false">
       <span></span><span></span>
@@ -176,10 +194,17 @@
       </p>
     </div>
 
+    <!-- Category Filter Pills (Instant filter on mobile & desktop) -->
+    <div class="paket__filter-bar" id="paket-filter-bar" role="tablist" aria-label="Filter Paket">
+      <button class="pkg-filter-pill is-active" data-filter="all" role="tab" aria-selected="true">Semua Paket (4)</button>
+      <button class="pkg-filter-pill" data-filter="umrah" role="tab" aria-selected="false">Umrah (2)</button>
+      <button class="pkg-filter-pill" data-filter="haji" role="tab" aria-selected="false">Haji Khusus (2)</button>
+    </div>
+
     <div class="paket__grid" id="paket-grid">
 
       <!-- Umrah Reguler -->
-      <article class="pkg" id="pkg-1" data-pkg="umrah-reguler">
+      <article class="pkg" id="pkg-1" data-pkg="umrah-reguler" data-category="umrah">
         <div class="pkg__media">
           <img src="assets/tawaf_aerial.jpg" alt="Ribuan jamaah bertawaf mengelilingi Kaabah dilihat dari atas" class="pkg__img" loading="lazy" />
           <div class="pkg__media-overlay"></div>
@@ -204,13 +229,19 @@
               <span class="pkg__price">Rp 29 Juta</span>
               <span class="pkg__pax">/orang</span>
             </div>
-            <a href="#daftar" class="pkg__cta" id="cta-umrah-reguler">Daftar &rarr;</a>
+            <div class="pkg__actions">
+              <a href="https://wa.me/6281234567890?text=Assalamu%27alaikum%20Baitullah%20Travel,%20saya%20ingin%20konsultasi%20Paket%20Umrah%20Reguler%2029%20Juta" target="_blank" rel="noopener noreferrer" class="pkg__wa-btn" aria-label="Konsultasi Umrah Reguler via WhatsApp">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.697.073-2.02-.475-1.637-.678-2.678-2.355-2.76-2.464-.082-.109-.661-.88-.661-1.678 0-.798.416-1.19.564-1.352.148-.162.324-.202.432-.202.108 0 .216.002.311.006.1.005.234-.038.366.279.136.327.466 1.134.507 1.218.041.084.068.182.013.292-.055.109-.082.178-.163.273-.082.095-.172.212-.246.285-.082.082-.168.171-.072.336.096.165.426.703.914 1.138.629.56 1.16.734 1.325.816.165.082.262.069.359-.042.097-.111.417-.486.528-.652.111-.166.222-.138.374-.083.152.055.968.456 1.134.539.166.083.277.125.318.194.041.069.041.402-.103.807z"/></svg>
+                <span>WA</span>
+              </a>
+              <a href="#daftar" class="pkg__cta" id="cta-umrah-reguler" data-select="umrah-reguler">Daftar &rarr;</a>
+            </div>
           </div>
         </div>
       </article>
 
       <!-- Umrah Premium -->
-      <article class="pkg pkg--featured" id="pkg-2" data-pkg="umrah-premium">
+      <article class="pkg pkg--featured" id="pkg-2" data-pkg="umrah-premium" data-category="umrah">
         <div class="pkg__badge pkg__badge--gold">Paling Diminati</div>
         <div class="pkg__media">
           <img src="assets/madinah_nabawi.jpg" alt="Masjid Nabawi Madinah di malam hari dengan kubah hijau bersinar" class="pkg__img" loading="lazy" />
@@ -236,13 +267,19 @@
               <span class="pkg__price">Rp 45 Juta</span>
               <span class="pkg__pax">/orang</span>
             </div>
-            <a href="#daftar" class="pkg__cta" id="cta-umrah-premium">Daftar &rarr;</a>
+            <div class="pkg__actions">
+              <a href="https://wa.me/6281234567890?text=Assalamu%27alaikum%20Baitullah%20Travel,%20saya%20ingin%20konsultasi%20Paket%20Umrah%20Premium%2045%20Juta" target="_blank" rel="noopener noreferrer" class="pkg__wa-btn" aria-label="Konsultasi Umrah Premium via WhatsApp">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.697.073-2.02-.475-1.637-.678-2.678-2.355-2.76-2.464-.082-.109-.661-.88-.661-1.678 0-.798.416-1.19.564-1.352.148-.162.324-.202.432-.202.108 0 .216.002.311.006.1.005.234-.038.366.279.136.327.466 1.134.507 1.218.041.084.068.182.013.292-.055.109-.082.178-.163.273-.082.095-.172.212-.246.285-.082.082-.168.171-.072.336.096.165.426.703.914 1.138.629.56 1.16.734 1.325.816.165.082.262.069.359-.042.097-.111.417-.486.528-.652.111-.166.222-.138.374-.083.152.055.968.456 1.134.539.166.083.277.125.318.194.041.069.041.402-.103.807z"/></svg>
+                <span>WA</span>
+              </a>
+              <a href="#daftar" class="pkg__cta" id="cta-umrah-premium" data-select="umrah-premium">Daftar &rarr;</a>
+            </div>
           </div>
         </div>
       </article>
 
       <!-- Haji Plus -->
-      <article class="pkg" id="pkg-3" data-pkg="haji-plus">
+      <article class="pkg" id="pkg-3" data-pkg="haji-plus" data-category="haji">
         <div class="pkg__media">
           <img src="assets/jamarat_pilgrims.jpg" alt="Jamaah Haji di Jembatan Jamarat selama musim haji" class="pkg__img" loading="lazy" />
           <div class="pkg__media-overlay"></div>
@@ -267,13 +304,19 @@
               <span class="pkg__price">Rp 185 Juta</span>
               <span class="pkg__pax">/orang</span>
             </div>
-            <a href="#daftar" class="pkg__cta" id="cta-haji-plus">Daftar &rarr;</a>
+            <div class="pkg__actions">
+              <a href="https://wa.me/6281234567890?text=Assalamu%27alaikum%20Baitullah%20Travel,%20saya%20ingin%20konsultasi%20Paket%20Haji%20Plus%20185%20Juta" target="_blank" rel="noopener noreferrer" class="pkg__wa-btn" aria-label="Konsultasi Haji Plus via WhatsApp">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.697.073-2.02-.475-1.637-.678-2.678-2.355-2.76-2.464-.082-.109-.661-.88-.661-1.678 0-.798.416-1.19.564-1.352.148-.162.324-.202.432-.202.108 0 .216.002.311.006.1.005.234-.038.366.279.136.327.466 1.134.507 1.218.041.084.068.182.013.292-.055.109-.082.178-.163.273-.082.095-.172.212-.246.285-.082.082-.168.171-.072.336.096.165.426.703.914 1.138.629.56 1.16.734 1.325.816.165.082.262.069.359-.042.097-.111.417-.486.528-.652.111-.166.222-.138.374-.083.152.055.968.456 1.134.539.166.083.277.125.318.194.041.069.041.402-.103.807z"/></svg>
+                <span>WA</span>
+              </a>
+              <a href="#daftar" class="pkg__cta" id="cta-haji-plus" data-select="haji-plus">Daftar &rarr;</a>
+            </div>
           </div>
         </div>
       </article>
 
       <!-- Haji Khusus -->
-      <article class="pkg" id="pkg-4" data-pkg="haji-khusus">
+      <article class="pkg" id="pkg-4" data-pkg="haji-khusus" data-category="haji">
         <div class="pkg__media">
           <img src="assets/tawaf_aerial.jpg" alt="Pemandangan aerial Masjidil Haram dari ketinggian" class="pkg__img" loading="lazy" style="object-position: center 60%;" />
           <div class="pkg__media-overlay"></div>
@@ -299,11 +342,25 @@
               <span class="pkg__price">Rp 250 Juta</span>
               <span class="pkg__pax">/orang</span>
             </div>
-            <a href="#daftar" class="pkg__cta" id="cta-haji-khusus">Daftar &rarr;</a>
+            <div class="pkg__actions">
+              <a href="https://wa.me/6281234567890?text=Assalamu%27alaikum%20Baitullah%20Travel,%20saya%20ingin%20konsultasi%20Paket%20Haji%20Khusus%20250%20Juta" target="_blank" rel="noopener noreferrer" class="pkg__wa-btn" aria-label="Konsultasi Haji Khusus via WhatsApp">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.697.073-2.02-.475-1.637-.678-2.678-2.355-2.76-2.464-.082-.109-.661-.88-.661-1.678 0-.798.416-1.19.564-1.352.148-.162.324-.202.432-.202.108 0 .216.002.311.006.1.005.234-.038.366.279.136.327.466 1.134.507 1.218.041.084.068.182.013.292-.055.109-.082.178-.163.273-.082.095-.172.212-.246.285-.082.082-.168.171-.072.336.096.165.426.703.914 1.138.629.56 1.16.734 1.325.816.165.082.262.069.359-.042.097-.111.417-.486.528-.652.111-.166.222-.138.374-.083.152.055.968.456 1.134.539.166.083.277.125.318.194.041.069.041.402-.103.807z"/></svg>
+                <span>WA</span>
+              </a>
+              <a href="#daftar" class="pkg__cta" id="cta-haji-khusus" data-select="haji-khusus">Daftar &rarr;</a>
+            </div>
           </div>
         </div>
       </article>
 
+    </div>
+
+    <!-- Mobile Swipe Dot Indicators -->
+    <div class="paket__mobile-dots" id="paket-mobile-dots" aria-hidden="true">
+      <button class="paket__dot is-active" data-idx="0" aria-label="Paket 1"></button>
+      <button class="paket__dot" data-idx="1" aria-label="Paket 2"></button>
+      <button class="paket__dot" data-idx="2" aria-label="Paket 3"></button>
+      <button class="paket__dot" data-idx="3" aria-label="Paket 4"></button>
     </div>
   </section>
 
@@ -768,6 +825,29 @@
       </div>
     </div>
   </footer>
+
+  <!-- ════════════════════════════════════
+       MOBILE STICKY CONCIERGE BAR
+       Thumb-zone luxury conversion bar
+  ════════════════════════════════════ -->
+  <aside class="mobile-concierge-bar" id="mobile-concierge-bar" aria-label="Aksi Cepat Konsultasi">
+    <div class="mobile-concierge-bar__inner">
+      <a href="https://wa.me/6281234567890?text=Assalamu%27alaikum%20Baitullah%20Travel,%20saya%20ingin%20konsultasi%20niat%20ibadah%20haji/umrah" 
+         target="_blank" 
+         rel="noopener noreferrer" 
+         class="mobile-concierge-bar__btn mobile-concierge-bar__btn--wa" 
+         id="mobile-bar-wa">
+        <span class="mobile-concierge-bar__pulse"></span>
+        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.697.073-2.02-.475-1.637-.678-2.678-2.355-2.76-2.464-.082-.109-.661-.88-.661-1.678 0-.798.416-1.19.564-1.352.148-.162.324-.202.432-.202.108 0 .216.002.311.006.1.005.234-.038.366.279.136.327.466 1.134.507 1.218.041.084.068.182.013.292-.055.109-.082.178-.163.273-.082.095-.172.212-.246.285-.082.082-.168.171-.072.336.096.165.426.703.914 1.138.629.56 1.16.734 1.325.816.165.082.262.069.359-.042.097-.111.417-.486.528-.652.111-.166.222-.138.374-.083.152.055.968.456 1.134.539.166.083.277.125.318.194.041.069.041.402-.103.807z"/></svg>
+        <span class="mobile-concierge-bar__label">Tanya Concierge</span>
+      </a>
+      <div class="mobile-concierge-bar__sep"></div>
+      <a href="#paket" class="mobile-concierge-bar__btn mobile-concierge-bar__btn--paket" id="mobile-bar-paket">
+        <span>Pilih Paket</span>
+        <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+      </a>
+    </div>
+  </aside>
 
   <!-- ════════════════════════════════════
        TOAST NOTIFICATION
