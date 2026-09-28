@@ -69,51 +69,68 @@ let lenis;
 function initLenis() {
   if (prefersReduced) return;
 
+  // Initialize Lenis with autoRaf: false so GSAP ticker is the single master clock
   lenis = new Lenis({
-    duration: 1.25,
+    autoRaf: false,
+    duration: 1.15,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    direction: 'vertical',
-    smooth: true,
-    smoothTouch: false,
+    orientation: 'vertical',
+    gestureOrientation: 'vertical',
+    smoothWheel: true,
+    touchMultiplier: 1.5,
   });
 
-  // Sync with GSAP ticker
+  // Synchronize Lenis scroll position with GSAP ScrollTrigger
   lenis.on('scroll', ScrollTrigger.update);
+
+  // Single unified rAF loop driven by GSAP ticker (Lenis expects milliseconds)
   gsap.ticker.add((time) => {
     lenis.raf(time * 1000);
   });
+
+  // Disable lag smoothing to prevent stutter/drift on frame drops
   gsap.ticker.lagSmoothing(0);
 }
 
 /* ═══════════════════════════════════════════════════
-   3. CUSTOM CURSOR
+   3. CUSTOM CURSOR (GPU Accelerated with quickSetter)
 ═══════════════════════════════════════════════════ */
 function initCursor() {
   const cursor    = qs('#cursor');
   const cursorDot = qs('#cursor-dot');
   if (!cursor || !cursorDot || isMobile()) return;
 
-  let mx = 0, my = 0;
-  let cx = 0, cy = 0;
+  const setCursorX = gsap.quickSetter(cursor, 'x', 'px');
+  const setCursorY = gsap.quickSetter(cursor, 'y', 'px');
+  const setDotX    = gsap.quickSetter(cursorDot, 'x', 'px');
+  const setDotY    = gsap.quickSetter(cursorDot, 'y', 'px');
+
+  let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+  let cx = mx, cy = my;
+
+  setDotX(mx);
+  setDotY(my);
+  setCursorX(cx);
+  setCursorY(cy);
 
   const onMove = (e) => {
     mx = e.clientX;
     my = e.clientY;
-    cursorDot.style.left = mx + 'px';
-    cursorDot.style.top  = my + 'px';
+    setDotX(mx);
+    setDotY(my);
   };
-  document.addEventListener('mousemove', onMove, { passive: true });
+  window.addEventListener('mousemove', onMove, { passive: true });
 
-  // Laggy cursor follow with GSAP ticker
+  // Smooth cursor follow with GSAP ticker without layout reflows
   gsap.ticker.add(() => {
-    cx += (mx - cx) * 0.12;
-    cy += (my - cy) * 0.12;
-    cursor.style.left = cx + 'px';
-    cursor.style.top  = cy + 'px';
+    cx += (mx - cx) * 0.16;
+    cy += (my - cy) * 0.16;
+    setCursorX(cx);
+    setCursorY(cy);
   });
 
   // Hover effects
-  const links = qsa('a, button, .pkg, .mengapa-card, .journey-step');
+  const links = qsa('a, button, .pkg, .mengapa-card, .journey-step, input, select, textarea');
   links.forEach(el => {
     el.addEventListener('mouseenter', () => cursor.classList.add('is-hovering'));
     el.addEventListener('mouseleave', () => cursor.classList.remove('is-hovering'));
@@ -384,15 +401,15 @@ function initKisah() {
     }
   );
 
-  // Floating parallax
+  // Floating parallax (scrub: true for instant 1:1 sync with Lenis)
   gsap.to(floatImg, {
-    yPercent: -12,
+    yPercent: -10,
     ease: 'none',
     scrollTrigger: {
       trigger: '#kisah',
       start: 'top bottom',
       end: 'bottom top',
-      scrub: 1.5,
+      scrub: true,
     }
   });
 
@@ -400,13 +417,13 @@ function initKisah() {
   const bgText = qs('.kisah__bg-text');
   if (bgText) {
     gsap.to(bgText, {
-      xPercent: 8,
+      xPercent: 6,
       ease: 'none',
       scrollTrigger: {
         trigger: '#kisah',
         start: 'top bottom',
         end: 'bottom top',
-        scrub: 2,
+        scrub: true,
       }
     });
   }
@@ -473,7 +490,7 @@ function initArafah() {
 
   if (overlay) {
     gsap.to(overlay, {
-      '--overlay-opacity': 0.85,
+      opacity: 0.9,
       ease: 'none',
       scrollTrigger: {
         trigger: section,
@@ -881,24 +898,7 @@ function initAnchorScroll() {
    20. SECTION BORDER LINE REVEAL
 ═══════════════════════════════════════════════════ */
 function initLineReveal() {
-  if (prefersReduced) return;
-
-  // Animate thin horizontal lines that separate sections
-  const sectionDividers = qsa('.paket__header, .mengapa__top, .journey__head, .jamaah__head, .daftar__text');
-  sectionDividers.forEach(el => {
-    gsap.fromTo(el,
-      { clipPath: 'inset(0 100% 0 0)' },
-      {
-        clipPath: 'inset(0 0% 0 0)',
-        duration: 1.2,
-        ease: 'expo.inOut',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 85%',
-        }
-      }
-    );
-  });
+  // Kept lightweight to avoid expensive GPU clipPath repaints during scroll
 }
 
 /* ═══════════════════════════════════════════════════
@@ -929,6 +929,16 @@ function initAfterLoad() {
   window.addEventListener('resize', () => {
     ScrollTrigger.refresh();
   });
+
+  // Ensure ScrollTrigger measures accurate layout after fonts and SplitType settle
+  if (document.fonts) {
+    document.fonts.ready.then(() => {
+      ScrollTrigger.refresh();
+    });
+  }
+  setTimeout(() => {
+    ScrollTrigger.refresh();
+  }, 350);
 }
 
 /* ─── BOOTSTRAP ─── */
