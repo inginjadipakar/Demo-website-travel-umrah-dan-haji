@@ -154,6 +154,36 @@ function initNav() {
       if (lenis) lenis.start();
     }
   });
+
+  // Active nav link highlight via IntersectionObserver
+  const sections = ['#fasilitas', '#paket', '#asatidz', '#legalitas', '#jamaah']
+    .map(id => document.querySelector(id)).filter(Boolean);
+
+  const navLinks = qsa('.nav__link');
+
+  const setActive = (id) => {
+    navLinks.forEach(link => {
+      const isActive = link.getAttribute('href') === id;
+      link.classList.toggle('nav__link--active', isActive);
+    });
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        setActive('#' + entry.target.id);
+      }
+    });
+  }, { rootMargin: '-30% 0px -55% 0px', threshold: 0 });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Clear active state when near the top of the page (Hero)
+  window.addEventListener('scroll', () => {
+    if (window.scrollY < 350) {
+      navLinks.forEach(link => link.classList.remove('nav__link--active'));
+    }
+  }, { passive: true });
 }
 
 /* ═══════════════════════════════════════════════════
@@ -857,9 +887,8 @@ function initForm() {
       setError('wa', true); valid = false;
     } else { clearError('wa'); }
 
-    if (!paket?.value) {
-      setError('paket', true); valid = false;
-    } else { clearError('paket'); }
+    // paket is optional (auto-filled if user clicks 'Daftar' on a specific package)
+    clearError('paket');
 
     if (!valid) return;
 

@@ -238,7 +238,7 @@ body:hover .cursor-dot { opacity: 1; }
 }
 .nav__links {
   display: flex;
-  gap: 2.2rem;
+  gap: 2.5rem;
 }
 .nav__link {
   font-size: 0.75rem;
@@ -266,6 +266,9 @@ body:hover .cursor-dot { opacity: 1; }
 .nav__link:hover::after { right: 0; }
 .nav.scrolled .nav__link { color: var(--c-ink-soft); }
 .nav.scrolled .nav__link:hover { color: var(--c-ink); }
+.nav__link--active { color: #fff !important; }
+.nav__link--active::after { right: 0 !important; }
+.nav.scrolled .nav__link--active { color: var(--c-ink) !important; }
 .nav__drawer-footer {
   display: none;
 }
@@ -286,11 +289,24 @@ body:hover .cursor-dot { opacity: 1; }
 }
 .nav.scrolled .nav__cta { border-color: var(--c-ink); color: var(--c-ink); }
 .nav.scrolled .nav__cta:hover { background: var(--c-gold); border-color: var(--c-gold); color: #fff; }
-.nav__burger { display: none; flex-direction: column; gap: 5px; width: 26px; z-index: 501; }
-.nav__burger span { display: block; width: 100%; height: 1.5px; background: #fff; transition: all 0.35s var(--ease-expo); }
+.nav__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 501;
+}
+.nav__burger span { display: block; width: 24px; height: 1.5px; background: #fff; transition: all 0.35s var(--ease-expo); }
 .nav.scrolled .nav__burger span { background: var(--c-ink); }
-.nav__burger.open span:first-child { transform: translateY(6.5px) rotate(45deg); background: #fff !important; }
-.nav__burger.open span:last-child  { transform: translateY(-6.5px) rotate(-45deg); background: #fff !important; }
+.nav__burger.open span:first-child { transform: translateY(3.25px) rotate(45deg); background: #fff !important; }
+.nav__burger.open span:last-child  { transform: translateY(-3.25px) rotate(-45deg); background: #fff !important; }
 
 /* ══════════════════════════════════════════════════
    BUTTONS
@@ -2225,15 +2241,12 @@ body:hover .cursor-dot { opacity: 1; }
 }
 
 @media (max-width: 1024px) {
-  .mengapa__grid { grid-template-columns: 1fr 1fr; }
-  .stats-bar__inner {
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-  }
-  .stats-bar__sep { display: none; }
-  .stats-bar__item { padding: 28px; }
+  .nav__links { gap: 1.4rem; }
+  .nav__link { font-size: 0.72rem; }
+  .nav__cta { padding: 8px 14px; font-size: 0.68rem; }
   .footer__top { grid-template-columns: 1fr 1fr; gap: 36px; }
   .daftar__inner { gap: 48px; }
+  .legalitas__grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -2456,9 +2469,6 @@ body:hover .cursor-dot { opacity: 1; }
   /* Testimonials */
   .jamaah__head { flex-direction: column; align-items: flex-start; gap: 20px; }
   .testi { flex: 0 0 86vw; }
-
-  /* Stats */
-  .stats-bar__inner { grid-template-columns: 1fr 1fr; }
 
   /* Form on mobile */
   .daftar__inner { grid-template-columns: 1fr; }
