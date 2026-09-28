@@ -23,42 +23,26 @@ gsap.registerPlugin(ScrollTrigger);
    1. PAGE LOADER
 ═══════════════════════════════════════════════════ */
 function initLoader() {
-  const loader  = qs('#page-loader');
-  const bar     = qs('#loader-bar');
-  const text    = qs('#loader-text');
-  const body    = document.body;
-  if (!loader || !bar) return;
+  const loader = qs('#page-loader');
+  const bar    = qs('#loader-bar');
+  const body   = document.body;
+  if (!loader) return;
 
-  const messages = [
-    'Mempersiapkan Perjalanan...',
-    'Menyiapkan Tanah Suci...',
-    'Selamat Datang...',
-  ];
-  let msgIdx = 0;
-  let progress = 0;
+  // Clean instant dissolve: fill bar immediately, then fade out loader
+  if (bar) bar.style.width = '100%';
 
-  const msgTimer = setInterval(() => {
-    msgIdx = (msgIdx + 1) % messages.length;
-    if (text) text.textContent = messages[msgIdx];
-  }, 700);
+  // Wait for fonts + first paint, then dissolve
+  const dissolve = () => {
+    loader.classList.add('done');
+    body.classList.remove('is-loading');
+    initAfterLoad();
+  };
 
-  // Fake progress
-  const interval = setInterval(() => {
-    progress += Math.random() * 18 + 6;
-    if (progress >= 100) {
-      progress = 100;
-      clearInterval(interval);
-      clearInterval(msgTimer);
-
-      bar.style.width = '100%';
-      setTimeout(() => {
-        loader.classList.add('done');
-        body.classList.remove('is-loading');
-        initAfterLoad();
-      }, 500);
-    }
-    bar.style.width = `${Math.min(progress, 100)}%`;
-  }, 140);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => setTimeout(dissolve, 320));
+  } else {
+    setTimeout(dissolve, 480);
+  }
 }
 
 /* ═══════════════════════════════════════════════════
@@ -130,7 +114,7 @@ function initCursor() {
   });
 
   // Hover effects
-  const links = qsa('a, button, .pkg, .mengapa-card, .journey-step, input, select, textarea');
+  const links = qsa('a, button, .pkg, .mengapa-card, .fasilitas-card, .asatidz-card, .legalitas-card, .journey-step, input, select, textarea');
   links.forEach(el => {
     el.addEventListener('mouseenter', () => cursor.classList.add('is-hovering'));
     el.addEventListener('mouseleave', () => cursor.classList.remove('is-hovering'));
@@ -235,21 +219,6 @@ function initHero() {
     { opacity: 0, y: 20 },
     { opacity: 1, y: 0, duration: 0.9, delay: 1.3, ease: 'expo.out' }
   );
-
-  // Hero nums fade
-  gsap.fromTo('.hero__nums',
-    { opacity: 0 },
-    { opacity: 1, duration: 0.8, delay: 1.5, ease: 'power2.out' }
-  );
-
-  // Number cycling
-  const nums = qsa('.hero__num');
-  let activeIdx = 2;
-  setInterval(() => {
-    nums[activeIdx]?.classList.remove('hero__num--active');
-    activeIdx = (activeIdx + 1) % nums.length;
-    nums[activeIdx]?.classList.add('hero__num--active');
-  }, 3200);
 
   // Hero parallax on scroll
   if (!isMobile() && heroImg) {
